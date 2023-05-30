@@ -1,4 +1,5 @@
 'use strict';
+const { Game } = require('../models')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -11,12 +12,16 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-
-    await queryInterface.bulkInsert('Games', [
-      {name: 'Root', numPlayers: 4, estPlayTime: 90},
-      {name: 'Scythe', numPlayers: 5, estPlayTime: 115},
-      {name: 'The Resistance', numPlayers: 10, estPlayTime: 30}
-    ])
+    try {
+      await Game.bulkCreate([
+        {name: 'Root', numPlayers: 4, estPlayTime: 90},
+        {name: 'Scythe', numPlayers: 5, estPlayTime: 115},
+        {name: 'The Resistance', numPlayers: 10, estPlayTime: 30}
+      ], { validate: true });
+    } catch (err) {
+      console.err(err);
+      throw err;
+    }
   },
 
   down: async (queryInterface, Sequelize) => {

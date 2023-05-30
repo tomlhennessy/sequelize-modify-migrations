@@ -1,4 +1,5 @@
 'use strict';
+const { Color } = require('../models')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -11,12 +12,17 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+    try {
+      await Color.bulkCreate([
+        { name: 'red' },
+        { name: 'blue' },
+        { name: 'yellow' },
+      ], { validate: true });
+    } catch (err) {
+      console.err(err);
+      throw err;
+    }
 
-    await queryInterface.bulkInsert('Colors', [
-      { name: 'red' },
-      { name: 'blue' },
-      { name: 'yellow' },
-    ])
   },
 
   down: async (queryInterface, Sequelize) => {

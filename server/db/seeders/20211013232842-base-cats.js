@@ -1,4 +1,5 @@
 'use strict';
+const { Cat } = require('../models')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -12,11 +13,16 @@ module.exports = {
      * }], {});
     */
 
-    await queryInterface.bulkInsert('Cats', [
-      { name: 'Jasper', weight: 12 },
-      { name: 'Marcy', weight: 16 },
-      { name: 'Princess', weight: 8 },
-    ])
+    try {
+      await Cat.bulkCreate([
+        { name: 'Jasper', weight: 12 },
+        { name: 'Marcy', weight: 16 },
+        { name: 'Princess', weight: 8 },
+      ], { validate: true });
+    } catch (err) {
+      console.err(err);
+      throw err;
+    }
   },
 
   down: async (queryInterface, Sequelize) => {
